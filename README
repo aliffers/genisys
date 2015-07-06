@@ -1,0 +1,38 @@
+Genisys Master I/O library
+--------------------------
+This library will use a Genisys home automation master as a bridge to send and
+receive Dynalite OpCodes onto the DyNet RS485 bus.
+
+The library requires an Aurdino with a standard Ethernet shield, integrated
+or otherwise as long as it can be accessed using the default Arduino Ethernet
+library.
+
+I do not expect this library to be of much use directly to anyone unless you
+also happen to have a Genisys master, which is a local product developed here
+in Perth by Light Application in Balcatta.  However, it effectively only has
+two functions of send and receive, which could be rewritten to use some other
+bridge device.
+
+What this library does do that may be of interest, is it'll calculate the
+checksum for the 8th byte of the OpCode before sending it, and it'll validate
+the received OpCode's checksum, before calling the receive function.
+
+Initialisation
+--------------
+All items of in the initialisation are Genisys specific, and have nothing to do
+with the DyNet network.  The Genisys master expects a hostname as well as IP
+address information, so this is supplied here.  The IPs are also used for the
+UDP send/recv.
+
+Functions
+---------
+sendOpCode: Expects an 8 byte array that is the OpCode.  This is then built
+into the expected UDP message for the Genisys after calculating the OpCode
+checksum and then sent.
+
+receiveOpCodes
+--------------
+A while loop that simply receives all awaiting UDP datagrams that have arrived
+since the last time the function was called.  It'll pull out the 8 hex codes
+that make up the OpCode and send it to the function, to which a pointer is
+provided as the parameter.
